@@ -33,13 +33,31 @@ int read(int fd, void *ptr, int len)
    return 1;
 }
 
-int strcmp(const char* str1, const char* str2) {
-   while(*str1 && (*str1 == *str2)) {
-      str1++;
-      str2++;
+/* print a string to stdout (file descriptor 1) */
+void print(char* buffer) {
+   for (int i = 0; i < BUFFER_SIZE; i++)
+   {
+      write(1, &buffer[i], 1);
+      if (buffer[i] == '\0')
+      {
+         break;
+      }
    }
-   return *(const unsigned char*) str1 - *(const unsigned char*) str2;
 }
+
+int strcmp(const char* str1, const char* str2) {
+   while(*str1 && (*str1 != '\0') && (*str1 == *str2)) {
+      ++str1;
+      ++str2;
+   }
+   if (str1[0] == '\0' && str2[0] == '\0') {
+      return 0;
+   }
+
+   return (*str1 > *str2) - (*str1 < *str2);
+   // return (int) (unsigned char)(*str1) -(int) (unsigned char)(*str2);
+}
+
 
 /* read one line from stdin (file descriptor 0) into a buffer: */
 void readline(char* buffer)
@@ -65,17 +83,7 @@ int write(int fd, void *ptr, int len) {
    return 1;
 }
 
-/* print a string to stdout (file descriptor 1) */
-void print(char* buffer) {
-   for (int i = 0; i < BUFFER_SIZE; i++)
-   {
-      write(1, &buffer[i], 1);
-      if (buffer[i] == '\0')
-      {
-         break;
-      }
-   }
-}
+
 
 void exit(int err){
    syscall(__NR_exit, err);
