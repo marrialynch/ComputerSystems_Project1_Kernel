@@ -34,6 +34,51 @@ int munmap(void *addr, int len);
  *  - use global variables for getarg
  */
 
+int read(int fd, void *ptr, int len)
+{
+   if (len < 1)
+   {
+      return -1;
+   }
+
+   syscall(__NR_read, fd, ptr, len);
+   return 1;
+}
+
+
+int write(int fd, void *ptr, int len) {
+      if (len < 1)
+   {
+      return -1;
+   }
+   syscall(__NR_write, fd, ptr, len);
+   return 1;
+}
+
+
+void exit(int err){
+   syscall(__NR_exit, err);
+}
+
+int open(char *path, int flags){
+	return syscall(__NR_open, path, flags);
+}
+
+int close(int fd){
+	return syscall(__NR_close, fd);
+}
+
+int lseek(int fd, int offset, int flag){
+	return syscall(__NR_lseek, fd, offset, flag);
+}
+
+void *mmap(void *addr, int len, int prot, int flags, int fd, int offset){
+	return (void*)syscall(__NR_mmap, addr, len, prot, flags, fd, offset);
+}
+int munmap(void *addr, int len){
+	return syscall(__NR_munmap, addr, len);
+}
+
 void do_readline(char *buf, int len){
 	for (int i = 0; i < len; i++)
    {
@@ -56,10 +101,20 @@ void do_print(char *buf){
       }
    }
 }
-char *do_getarg(int i){
-	split(argv,10,BUF);
-	return argv[i];
-}        
+
+int strcmp(const char* str1, const char* str2) {
+   for (int i = 0; i < 4; i++) {
+      if (*str1 && (*str1 == *str2)) {
+         str1++;
+         str2++;
+      }
+   }
+   if (str2[0] == '\0') {
+      return 0;
+   }
+   return (*str1 > *str2) - (*str1 < *str2);
+}
+       
 
 /* ---------- */
 
@@ -100,19 +155,13 @@ int split(char **argv, int max_argc, char *line)
 	return i;
 }
 
-
+char *do_getarg(int i){
+	split(argv,10,BUF);
+	return argv[i];
+} 
 /* ---------- */
 
-
-void main(void)
-{
-	
-	vector[0] = do_readline;
-	vector[1] = do_print;
-	vector[2] = do_getarg;
-	// do_readline(param);
-
-	
+int load_prog(){
 	char *filename = do_getarg(0);	/* I should really check argc first... */
 	int fd;
 	/* YOUR CODE HERE */
@@ -124,7 +173,7 @@ void main(void)
 	struct elf64_ehdr hdr;
 	read(fd, &hdr, sizeof(hdr));
 	//store the executable's info in hdr -> elf header
-	do_print("entry point address: " + str(hdr.e_entry));
+	//do_print("entry point address: " + str(hdr.e_entry));
 
 	/* read program headers (offset 'hdr.e_phoff') */
 	int i, n = hdr.e_phnum;
@@ -139,15 +188,15 @@ void main(void)
 	// ----------------------determine the value of M_offset------------------------------
 	// multiple of 4096 = 64 * 4096
 	int M_offset = 64 * 4096;
-	char* buf[n] ; // array of pointer
+	char* addr_buf[n] ; // array of pointer to store mmap address
 	/* look at each section in program headers */
 	for (i = 0; i < hdr.e_phnum; i++) {
 		if (phdrs[i].p_type == PT_LOAD) {
 			// not all segments should be loaded in memory, only those with p_type PT_LOAD
 			int len = ROUND_UP(phdrs[i].p_memsz, 4096);
 			long addrp = ROUND_DOWN((long)phdrs[i].p_vaddr, 4096); // starting address of the page
-			buf[i] = mmap(addrp + M_offset, len, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-			if (buf == MAP_FAILED) {
+			addr_buf[i] = (char*)mmap((long*)(addrp + M_offset), len, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+			if (addr_buf == MAP_FAILED) {
 				do_print("mmap failed\n");
 				exit(0);
 			}
@@ -158,9 +207,38 @@ void main(void)
 	void (*f)();
 	f = hdr.e_entry + M_offset;
 	f();
-// for loop to mumap()
+	for (i = 0; i < hdr.e_phnum; i++) {
+		if (phdrs[i].p_type == PT_LOAD) {
+			int len = ROUND_UP(phdrs[i].p_memsz, 4096);
+			int munmap_res = munmap(addr_buf[i], len);
+			if (munmap_res < 0) {
+				do_print("munmap failed\n");
+				exit(0);
+			}
+		}
+	}
 	close(fd);
+	return 0;
 
+}
+
+void main(void)
+{
+	
+	vector[0] = do_readline;
+	vector[1] = do_print;
+	vector[2] = do_getarg;
+	// do_readline(param);
+	while(1){
+		do_print("> ");
+		do_readline(BUF, BUFFER_SIZE);
+		if (strcmp(BUF, "quit") == 0) {
+			exit(1);
+		}
+		load_prog();
+	}
+
+	
 }
 
 
