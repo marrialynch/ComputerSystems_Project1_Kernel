@@ -51,7 +51,7 @@ void main(void)
 	vector[4] = do_yield21;
 	vector[5] = do_uexit;
 	void* location_main[0] = NULL;
-	
+
 	/* your code here */
 //	1. get the entry point of 2 processes
 //		part2 load and return entry point for process1 and process2
@@ -63,11 +63,11 @@ void main(void)
 //		location_sp2[0] = setup_stack0(stack2+4096, location_sp2[0])
 
 //	4. switch to process 1 from OS stack
-//		switch_to(location_main[0],location_sp1[0])
+//		switch_to(location_main,location_sp1[0])
 
 //	5. yield12 and yield21
-//		swich_to(location_sp1[0],location_sp2[0])
-//		swich_to(location_sp2[0],location_sp1[0])
+//		swich_to(location_sp1,location_sp2[0])
+//		swich_to(location_sp2,location_sp1[0])
 
 //	6. uexit
 //		swich_to(NULL, location_main[0]);
