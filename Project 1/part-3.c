@@ -87,7 +87,8 @@ void do_print(char *buf);
 /* ---------- */
 void do_print(char *buf)
 {
-	for (int i = 0; i < BUFFER_SIZE; i++)
+	int i;
+	for (i = 0; i < BUFFER_SIZE; i++)
 	{
 		write(1, &buf[i], 1);
 		if (buf[i] == '\0')
