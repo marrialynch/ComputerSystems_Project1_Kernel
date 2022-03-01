@@ -35,7 +35,8 @@ int read(int fd, void *ptr, int len)
 
 /* print a string to stdout (file descriptor 1) */
 void print(char* buffer) {
-   for (int i = 0; i < BUFFER_SIZE; i++)
+	int i;
+   for (i = 0; i < BUFFER_SIZE; i++)
    {
       write(1, &buffer[i], 1);
       if (buffer[i] == '\0')
@@ -46,7 +47,8 @@ void print(char* buffer) {
 }
 
 int strcmp(const char* str1, const char* str2) {
-   for (int i = 0; i < 4; i++) {
+	int i;
+   for (i = 0; i < 4; i++) {
       if (*str1 && (*str1 == *str2)) {
          str1++;
          str2++;
@@ -62,8 +64,8 @@ int strcmp(const char* str1, const char* str2) {
 /* read one line from stdin (file descriptor 0) into a buffer: */
 void readline(char* buffer)
 {
-   
-   for (int i = 0; i < BUFFER_SIZE; i++)
+   int i;
+   for (i = 0; i < BUFFER_SIZE; i++)
    {
       read(0, &buffer[i], 1);
       if (buffer[i] == '\n')
@@ -100,6 +102,7 @@ void main (){
 
    print(welcome_prompt);
    while(1) {
+	  print("> "); 
       readline(buffer);
       if (strcmp(buffer, exit_str) == 0){
          exit(1);
