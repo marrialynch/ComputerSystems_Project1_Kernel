@@ -80,7 +80,8 @@ int munmap(void *addr, int len){
 }
 
 void do_readline(char *buf, int len){
-	for (int i = 0; i < len; i++)
+	int i;
+	for (i = 0; i < len; i++)
    {
       read(0, &buf[i], 1);
       if (buf[i] == '\n')
@@ -92,7 +93,8 @@ void do_readline(char *buf, int len){
 }
 
 void do_print(char *buf){
-	for (int i = 0; i < BUFFER_SIZE; i++)
+	int i;
+	for (i = 0; i < BUFFER_SIZE; i++)
    {
       write(1, &buf[i], 1);
       if (buf[i] == '\0')
@@ -103,7 +105,8 @@ void do_print(char *buf){
 }
 
 int strcmp(const char* str1, const char* str2) {
-   for (int i = 0; i < 4; i++) {
+	int i;
+   for (i = 0; i < 4; i++) {
       if (*str1 && (*str1 == *str2)) {
          str1++;
          str2++;
