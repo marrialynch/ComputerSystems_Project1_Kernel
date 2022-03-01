@@ -106,17 +106,30 @@ void do_print(char *buf){
 
 int strcmp(const char* str1, const char* str2) {
 	int i;
-   for (i = 0; i < 4; i++) {
+   	for (i = 0; i < 4; i++) {
       if (*str1 && (*str1 == *str2)) {
          str1++;
          str2++;
       }
-   }
-   if (str2[0] == '\0') {
+   	}
+   	if (str2[0] == '\0') {
       return 0;
-   }
-   return (*str1 > *str2) - (*str1 < *str2);
+   	}
+   	return (*str1 > *str2) - (*str1 < *str2);
 }
+
+int strlen(char *input){
+
+    int length = 0;
+    while(input[length]!='\0')  //  remove ;
+    {
+        length++;
+    }
+
+	return length;
+
+}
+
        
 
 /* ---------- */
@@ -235,7 +248,8 @@ void main(void)
 	while(1){
 		do_print("> ");
 		do_readline(BUF, BUFFER_SIZE);
-		if (strcmp(BUF, "quit") == 0) {
+		char *firstWord = do_getarg(0);
+		if (strcmp(firstWord, "quit") == 0 && strlen(firstWord) == 4) {
 			exit(1);
 		}
 		load_prog();
