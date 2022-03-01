@@ -36,28 +36,26 @@ int munmap(void *addr, int len);
 
 int read(int fd, void *ptr, int len)
 {
-   if (len < 1)
-   {
-      return -1;
-   }
+	if (len < 1) {
+        return -1;
+    }
 
-   syscall(__NR_read, fd, ptr, len);
-   return 1;
+    syscall(__NR_read, fd, ptr, len);
+    return 1;
 }
 
 
 int write(int fd, void *ptr, int len) {
-      if (len < 1)
-   {
-      return -1;
-   }
-   syscall(__NR_write, fd, ptr, len);
-   return 1;
+    if (len < 1) {
+        return -1;
+	}
+    syscall(__NR_write, fd, ptr, len);
+    return 1;
 }
 
 
 void exit(int err){
-   syscall(__NR_exit, err);
+    syscall(__NR_exit, err);
 }
 
 int open(char *path, int flags){
@@ -82,39 +80,37 @@ int munmap(void *addr, int len){
 void do_readline(char *buf, int len){
 	int i;
 	for (i = 0; i < len; i++)
-   {
-      read(0, &buf[i], 1);
-      if (buf[i] == '\n')
-      {
-         buf[++i] = '\0';
-         break;
-      }
-   }
+    {
+        read(0, &buf[i], 1);
+        if (buf[i] == '\n') {
+			buf[++i] = '\0';
+            break;
+        }
+    }
 }
 
 void do_print(char *buf){
 	int i;
 	for (i = 0; i < BUFFER_SIZE; i++)
-   {
-      write(1, &buf[i], 1);
-      if (buf[i] == '\0')
-      {
-         break;
-      }
-   }
+    {
+        write(1, &buf[i], 1);
+        if (buf[i] == '\0') {
+            break;
+        }
+    }
 }
 
 int strcmp(const char* str1, const char* str2) {
 	int i;
-   	for (i = 0; i < 4; i++) {
-      if (*str1 && (*str1 == *str2)) {
-         str1++;
-         str2++;
-      }
-   	}
-   	if (str2[0] == '\0') {
-      return 0;
-   	}
+	for (i = 0; i < 4; i++) {
+		if (*str1 && (*str1 == *str2)) {
+        str1++;
+        str2++;
+		}
+	}
+	if (str2[0] == '\0') {
+		return 0;
+	}
    	return (*str1 > *str2) - (*str1 < *str2);
 }
 
@@ -130,7 +126,6 @@ int strlen(char *input){
 
 }
 
-       
 
 /* ---------- */
 
