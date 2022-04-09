@@ -11,7 +11,8 @@ Stairs crossing problem using pThreads and Semaphores
 #ifndef tNum
 // TODO
 // #define tNum: which is the maximum number of customers/threads in the system to test
-#define tNum 30
+#define tNum 5
+
 // you can also define other constants for your "prevent deadlock" or "prevent starvation" algorithm
 #endif
 
@@ -58,7 +59,7 @@ void *b(void *arg);
 void semWait(sem_t *sem);
 void semSignal(sem_t *sem);
 
-int main()
+int main()    
 {
 
 	printf("Project 2: Customer crossing problem using pThreads and Semaphores\n");
@@ -101,15 +102,13 @@ int main()
 			thread_func = b;
 		}
 
-		sleep(1);
-		sleep(1);
 
 		if ((errCheck = pthread_create(&thread[i], NULL, thread_func, &tData[i])))
 		{
 			fprintf(stderr, "error: pthread_create, %d\n", errCheck);
 			return EXIT_FAILURE;
-		} // end of error check if statement
-	}	  // end of thread creation for loop
+		} 
+	}	  
 
 	for (int i = 0; i < tNum; ++i)
 	{
@@ -141,12 +140,12 @@ void *b(void *arg)
 	 *  "customer to B should wait", “Finished Stairs")
 	 */
 
-	printf("****\nThread %d: About to across\n", tIDb);
+	printf("****\nThread %d: About to across from A to B \n", tIDb);
 
-	if (xingDir == 0 || ((xingDir == 1) && (xingCnt < maxStairs) && (xedCnt + xingCnt) < maxBatch))
+	if ((xingDir == 0 || (xingDir == 1)) && (xingCnt < maxStairs) && ((xedCnt + xingCnt) < maxBatch))
 	{
 
-		printf("customer is Crossing from A to B\n");
+		printf("%d is Crossing from A to B\n", tIDb);
 
 		xingDir = 1;
 		xingCnt++;
@@ -157,10 +156,10 @@ void *b(void *arg)
 	}
 	else
 	{
-		printf("customer is now supposed to wait\n");
+		printf("%d is now supposed to wait\n", tIDb);
 		toBwaitCnt++;
 
-		printf("Signalling mutex \n");
+		printf("%d is Signalling mutex \n", tIDb);
 		semWait(&mutex);
 		semWait(&toB);
 
@@ -170,12 +169,13 @@ void *b(void *arg)
 		xingCnt++;
 		xingDir = 1;
 
-		printf("about to cross \n");
+		printf("%d is about to cross \n", tIDb);
 		printf("Signaling Mutex\n");
 		semSignal(&mutex);
 	}
 
-	printf("Crossing Finished. Waiting for mutex \n");
+	sleep(1);
+	printf("%d Crossing Finished. Waiting for mutex \n", tIDb);
 	semWait(&mutex);
 	printf("Mutex Passed\n");
 	xedCnt++;
@@ -186,7 +186,7 @@ void *b(void *arg)
 		 (xedCnt + xingCnt >= maxBatch && toAwaitCnt == 0)))
 	{
 
-		printf("Signaling customer Crossing to B\n");
+		printf("%d is Signaling customer Crossing to B\n", tIDb);
 
 		semSignal(&toB);
 	}
@@ -196,8 +196,8 @@ void *b(void *arg)
 			 (toBwaitCnt == 0 ||
 			  xedCnt + toBwaitCnt >= maxBatch))
 	{
-		printf("Changing Direction to turn toward A\n");
-		printf("Signaling customer waiting to cross to A\n");
+		printf("%d is Changing Direction to turn toward A\n", tIDb);
+		printf("%d is Signaling customer waiting to cross to A\n", tIDb);
 
 		xingDir = 2;
 		xedCnt = 0;
@@ -211,13 +211,13 @@ void *b(void *arg)
 		xingDir = 0;
 		xedCnt = 0;
 
-		printf("Crossing Direction Reset \n");
+		printf("%d: Crossing Direction Reset \n", tIDb);
 		semSignal(&mutex);
 	}
 
 	else
 	{
-		printf("Signaling Mutex\n");
+		printf("%d: Signaling Mutex\n", tIDb);
 		semSignal(&mutex);
 	}
 
@@ -240,12 +240,12 @@ void *a(void *arg)
 	 *  "customer to A should wait", “Finished Stairs")
 	 */
 
-	printf("****\nThread %d: About to across\n", tIDa);
+	printf("****\nThread %d: About to across from B to A \n", tIDa);
 
-	if (xingDir == 0 || ((xingDir == 2) && (xingCnt < maxStairs) && (xedCnt + xingCnt) < maxBatch))
+	if ((xingDir == 0 || (xingDir == 2)) && (xingCnt < maxStairs) && (xedCnt + xingCnt) < maxBatch)
 	{
 
-		printf("customer is Crossing from B to A\n");
+		printf("%d is Crossing from B to A\n", tIDa);
 
 		xingDir = 2;
 		xingCnt++;
@@ -256,25 +256,26 @@ void *a(void *arg)
 	}
 	else
 	{
-		printf("customer is now supposed to wait\n");
+		printf("%d is now supposed to wait\n", tIDa);
 		toAwaitCnt++;
 
-		printf("Signalling mutex \n");
+		printf("%d is Signalling mutex \n", tIDa);
 		semWait(&mutex);
 		semWait(&toA);
 
-		printf("toA was waiting until signal call.");
+		printf("%d was waiting until signal call.", tIDa);
 		printf("Signal has been called \n");
 		toAwaitCnt--;
 		xingCnt++;
 		xingDir = 2;
 
-		printf("about to cross \n");
+		printf("%d is about to cross \n", tIDa);
 		printf("Signaling Mutex\n");
 		semSignal(&mutex);
 	}
 
-	printf("Crossing Finished. Waiting for mutex \n");
+	sleep(1);
+	printf("%d Crossing Finished. Waiting for mutex \n", tIDa);
 	semWait(&mutex);
 	printf("Mutex Passed\n");
 	xedCnt++;
@@ -285,7 +286,7 @@ void *a(void *arg)
 		 (xedCnt + xingCnt >= maxBatch && toBwaitCnt == 0)))
 	{
 
-		printf("Signaling customer Crossing to A\n");
+		printf("%d: Signaling customer Crossing to A\n", tIDa);
 
 		semSignal(&toA);
 	}
@@ -295,7 +296,7 @@ void *a(void *arg)
 			 (toAwaitCnt == 0 ||
 			  xedCnt + toBwaitCnt >= maxBatch))
 	{
-		printf("Changing Direction to turn toward B\n");
+		printf("%d: Changing Direction to turn toward B\n", tIDa);
 		printf("Signaling customer waiting to cross to B\n");
 
 		xingDir = 1;
@@ -310,13 +311,13 @@ void *a(void *arg)
 		xingDir = 0;
 		xedCnt = 0;
 
-		printf("Crossing Direction Reset \n");
+		printf("%d: Crossing Direction Reset \n", tIDa);
 		semSignal(&mutex);
 	}
 
 	else
 	{
-		printf("Signaling Mutex\n");
+		printf("%d: Signaling Mutex\n", tIDa);
 		semSignal(&mutex);
 	}
 
