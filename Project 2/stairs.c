@@ -11,7 +11,7 @@ Stairs crossing problem using pThreads and Semaphores
 #ifndef tNum
 // TODO
 // #define tNum: which is the maximum number of customers/threads in the system to test
-#define tNum 5
+#define tNum 20
 
 // you can also define other constants for your "prevent deadlock" or "prevent starvation" algorithm
 #endif
@@ -132,7 +132,14 @@ void *b(void *arg)
 
 	int tIDb = data->tID;
 	semWait(&mutex);
-
+	while (xingCnt > maxStairs) {
+		semSignal(&mutex);
+		sleep(1);
+		printf("\n Thread: %d crossing count larger than maxStairs \n", tIDb);
+		if (xingDir == 1) {
+			semSignal(&toA); 
+		}
+	}
 	// TODO
 	/*
 	 *	process the toB action.
@@ -160,7 +167,7 @@ void *b(void *arg)
 		toBwaitCnt++;
 
 		printf("%d is Signalling mutex \n", tIDb);
-		semWait(&mutex);
+		// semWait(&mutex);
 		semWait(&toB);
 
 		printf("B was waiting until signal call.");
@@ -171,11 +178,13 @@ void *b(void *arg)
 
 		printf("%d is about to cross \n", tIDb);
 		printf("Signaling Mutex\n");
+		semSignal(&toB);
 		semSignal(&mutex);
 	}
 
 	sleep(1);
 	printf("%d Crossing Finished. Waiting for mutex \n", tIDb);
+	printf("\n xingCnt: %d, xedCnt: %d, toAwaitCnt: %d, toBwaitCnt: %d, xingDir: %d \n", xingCnt,xedCnt,toAwaitCnt,toBwaitCnt,xingDir);
 	semWait(&mutex);
 	printf("Mutex Passed\n");
 	xedCnt++;
@@ -233,6 +242,15 @@ void *a(void *arg)
 
 	int tIDa = data->tID;
 	semWait(&mutex);
+	while (xingCnt > maxStairs) {
+		semSignal(&mutex);
+		sleep(1);
+		printf("\n Thread: %d crossing count larger than maxStairs \n", tIDa);
+		if (xingDir == 2) {
+			semSignal(&toB); 
+		} 
+		
+	}
 	// TODO
 	/*
 	 *	process the toA action.
@@ -260,7 +278,7 @@ void *a(void *arg)
 		toAwaitCnt++;
 
 		printf("%d is Signalling mutex \n", tIDa);
-		semWait(&mutex);
+		// semWait(&mutex);
 		semWait(&toA);
 
 		printf("%d was waiting until signal call.", tIDa);
@@ -271,11 +289,13 @@ void *a(void *arg)
 
 		printf("%d is about to cross \n", tIDa);
 		printf("Signaling Mutex\n");
+		semSignal(&toA);
 		semSignal(&mutex);
 	}
 
 	sleep(1);
 	printf("%d Crossing Finished. Waiting for mutex \n", tIDa);
+	printf("\n xingCnt: %d, xedCnt: %d, toAwaitCnt: %d, toBwaitCnt: %d, xingDir: %d \n", xingCnt,xedCnt,toAwaitCnt,toBwaitCnt,xingDir);
 	semWait(&mutex);
 	printf("Mutex Passed\n");
 	xedCnt++;
@@ -346,7 +366,7 @@ void semSignal(sem_t *sem)
 	{
 		perror("sem_post");
 		exit(EXIT_FAILURE);
-	}
+	} 
 }
 
 /*
