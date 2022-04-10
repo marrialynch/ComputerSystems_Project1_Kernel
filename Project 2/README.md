@@ -78,7 +78,7 @@ When we permit at most 6 customers on the stairs and at most 10 customers of the
  >The average Response time for 2000 customers is 142.286729 seconds 
 
 
-It's not “efficient” when we have 2000 customers, we can adjust the value of maxStairs and maxBatch.
+It's not “efficient” when we have 2000 customers, we can adjust the value of `maxStairs` and `maxBatch`.
 
 When we permit at most 10 customers on the stairs and at most 100 customers of the same direction on a batch, 
 
@@ -91,11 +91,11 @@ When we permit at most 10 customers on the stairs and at most 100 customers of t
 
 You can compile and run the code by running `make` in the terminal. There will be two output files `output1.txt` and `output2.txt` generated in the folder after the program ends.
 
-To test the code, you can change the value of the flowwing variables defined at the start of the `stairs.c` file:
+To test the code, you can change the value of the follwing variables defined at the start of the `stairs.c` file:
 
-`tNum`: the maximum number of customers/threads in the system to test
-`maxStairs`: how many customers can be on the stairs at the same time
-`maxBatch`: how many customers of the same direction can be on a batch
+-`tNum`: the maximum number of customers/threads in the system to test
+-`maxStairs`: how many customers can be on the stairs at the same time
+-`maxBatch`: how many customers of the same direction can be on a batch
 
 
 ## Contributions
