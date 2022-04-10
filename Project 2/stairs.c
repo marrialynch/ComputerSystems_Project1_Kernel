@@ -47,7 +47,7 @@ sem_t toA, toB, mutex;
 int xingCnt, xedCnt, toAwaitCnt, toBwaitCnt;
 
 /*
- *	flag the crossing direction (0 noDir, 1 upDir, 2 downDir)
+ *	flag the crossing direction (0 noDir, 2 upDir, 1 downDir)
  */
 int xingDir;
 
@@ -59,10 +59,11 @@ void *b(void *arg);
 void semWait(sem_t *sem);
 void semSignal(sem_t *sem);
 
-int main()    
+int main()
 {
 
 	printf("Project 2: Customer crossing problem using pThreads and Semaphores\n");
+
 	printf("*****************\n\n");
 	fflush(stdout);
 
@@ -75,11 +76,13 @@ int main()
 	tData_t tData[tNum];
 	pthread_t thread[tNum];
 
-	int errCheck;
+	int resultCheck;
 
-	if (sem_init(&mutex, 0, (unsigned int)1) < 0 || sem_init(&toA, 0, (unsigned int)1) < 0 || sem_init(&toB, 0, (unsigned int)1) < 0)
+	if (sem_init(&mutex, 0, (unsigned int)1) < 0 ||
+		sem_init(&toA, 0, (unsigned int)1) < 0 ||
+		sem_init(&toB, 0, (unsigned int)1) < 0)
 	{
-		perror("sem_init");
+		printf("error! %d", resultCheck);
 		exit(EXIT_FAILURE);
 	}
 	printf("Parent Process PID: %d \n", getpid()); // parent PID
@@ -91,32 +94,32 @@ int main()
 
 	for (int i = 0; i < tNum; ++i)
 	{
-		void *thread_func; // the function to call
-		tData[i].tID = i;  // set thread id to current i value
-		if (rand() % tNum <= tNum / 2)
+		void *thread_func;	 // the function to call when creating pthreads
+		tData[i].tID = i;	 // set thread id to current i value
+		if (rand() % 2 == 1) // go up if it's even number
 		{
 			thread_func = a;
 		}
 		else
 		{
-			thread_func = b;
+			thread_func = b; // go down if it's odd number
 		}
 
-
-		if ((errCheck = pthread_create(&thread[i], NULL, thread_func, &tData[i])))
+		if ((resultCheck = pthread_create(&thread[i], NULL, thread_func, &tData[i])))
 		{
-			fprintf(stderr, "error: pthread_create, %d\n", errCheck);
+			printf("error in calling pthread_create, %d\n", resultCheck);
 			return EXIT_FAILURE;
-		} 
-	}	  
+		}
+	}
 
 	for (int i = 0; i < tNum; ++i)
 	{
-		if ((errCheck = pthread_join(thread[i], NULL)))
+		if ((resultCheck = pthread_join(thread[i], NULL)))
 		{
-			fprintf(stderr, "error: pthread_join, %d\n", errCheck);
+			printf("error in calling pthread_join, %d\n", resultCheck);
+			return EXIT_FAILURE;
 		}
-	} // end of pthread join errorcheck for loop
+	}
 
 	return EXIT_SUCCESS;
 }
@@ -132,12 +135,19 @@ void *b(void *arg)
 
 	int tIDb = data->tID;
 	semWait(&mutex);
-	while (xingCnt > maxStairs) {
+
+	// if people on the stairs reach max, we constanlty release mutex to let customer
+	// update xedCounter
+	while (xingCnt > maxStairs)
+	{
 		semSignal(&mutex);
 		sleep(1);
 		printf("\n Thread: %d crossing count larger than maxStairs \n", tIDb);
-		if (xingDir == 1) {
-			semSignal(&toA); 
+		// if the xing direction is the same as the current thread,
+		// we need to waken the other direction to unblock the update of global counters.
+		if (xingDir == 1)
+		{
+			semSignal(&toA);
 		}
 	}
 	// TODO
@@ -178,13 +188,14 @@ void *b(void *arg)
 
 		printf("%d is about to cross \n", tIDb);
 		printf("Signaling Mutex\n");
+		// release the toB lock so that other queuing customer that already got the stair lock could go
 		semSignal(&toB);
 		semSignal(&mutex);
 	}
 
 	sleep(1);
 	printf("%d Crossing Finished. Waiting for mutex \n", tIDb);
-	printf("\n xingCnt: %d, xedCnt: %d, toAwaitCnt: %d, toBwaitCnt: %d, xingDir: %d \n", xingCnt,xedCnt,toAwaitCnt,toBwaitCnt,xingDir);
+	printf("\n xingCnt: %d, xedCnt: %d, toAwaitCnt: %d, toBwaitCnt: %d, xingDir: %d \n", xingCnt, xedCnt, toAwaitCnt, toBwaitCnt, xingDir);
 	semWait(&mutex);
 	printf("Mutex Passed\n");
 	xedCnt++;
@@ -242,14 +253,19 @@ void *a(void *arg)
 
 	int tIDa = data->tID;
 	semWait(&mutex);
-	while (xingCnt > maxStairs) {
+	// if people on the stairs reach max, we constanlty release mutex to let customer
+	// update xedCounter
+	while (xingCnt > maxStairs)
+	{
 		semSignal(&mutex);
 		sleep(1);
 		printf("\n Thread: %d crossing count larger than maxStairs \n", tIDa);
-		if (xingDir == 2) {
-			semSignal(&toB); 
-		} 
-		
+		// if the xing direction is the same as the current thread,
+		// we need to waken the other direction to unblock the update of global counters.
+		if (xingDir == 2)
+		{
+			semSignal(&toB);
+		}
 	}
 	// TODO
 	/*
@@ -295,7 +311,7 @@ void *a(void *arg)
 
 	sleep(1);
 	printf("%d Crossing Finished. Waiting for mutex \n", tIDa);
-	printf("\n xingCnt: %d, xedCnt: %d, toAwaitCnt: %d, toBwaitCnt: %d, xingDir: %d \n", xingCnt,xedCnt,toAwaitCnt,toBwaitCnt,xingDir);
+	printf("\n xingCnt: %d, xedCnt: %d, toAwaitCnt: %d, toBwaitCnt: %d, xingDir: %d \n", xingCnt, xedCnt, toAwaitCnt, toBwaitCnt, xingDir);
 	semWait(&mutex);
 	printf("Mutex Passed\n");
 	xedCnt++;
@@ -352,7 +368,7 @@ void semWait(sem_t *sem)
 {
 	if (sem_wait(sem) < 0)
 	{
-		perror("sem_wait");
+		printf("sem_wait is smaller than 0!");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -364,9 +380,9 @@ void semSignal(sem_t *sem)
 {
 	if (sem_post(sem) < 0)
 	{
-		perror("sem_post");
+		printf("sem_post is smaller than 0!");
 		exit(EXIT_FAILURE);
-	} 
+	}
 }
 
 /*

@@ -21,7 +21,7 @@ We had a basic version with 1 mutex, and an improved version with pthread_condit
 
 ## Implementation 
 ----
-The main idea was to use 3 semaphores, 1 to control the stair and global counters related to the stair, 1 to control the line waiting for upward direction, and 1 for the downward direction. 
+The main idea was to use 3 semaphores, 1 to control the stair and global counters related to the stair, and 2 direction semaphores: 1 to control the line waiting for upward direction, and 1 for the downward direction. 
 
 Since there are 13 steps in the staircase, and in order to increase the efficiency of using stairs, we allow one direction to go in batch with size 10, and 6 people could be on the stairs at the same time. Of course, theses numbers could be changed as they were not hard-coded.
 
@@ -29,8 +29,31 @@ Since there are 13 steps in the staircase, and in order to increase the efficien
 Since threads here are customers waiting to use the stairs, we generated *tNum* threads and called either method *a()* (go up) or *b()* (go downn) depending on the random direction assigned to each thread to immitate the real situation where customers conme to the stairs randomly. 
 
 ### - a() and b()
+The 2 methods are doing exactly same thing, but in opposite direction. Here we explain *b()* in detail. 
+
+First, we wait for the stair mutex and check if people on the stairs reach max, we constanlty release mutex to let customer updat
+e global counter xedCounter. Also, if the xing direction is the same as the current thread, we need to waken the other direction to unblock the update of global counters. This step is to solve the issue that stairs are not locked, but direction semephores block the customer from entering.
+
+When a customer acquires the lock, it checks if the direction is either the same from the previous xing /xed customer, and the batch size and max number of people on the stairs are not maxed out. If so, the customer could go, update xing counter, and release the stair lock. At this point, the customer is on the stairs and others in the same direction could go.
+
+But, if the previous conditions are not satisfied, this customer needs to wait. It updates directional wait counter and queue for directional semaphore. Once it's its turn to go that direction, it updates corresponding counter, and release directional lock and stair lock sequentially.
+
+Then, it waits for stair lock again to update crossed counter. Now, the customer finishes crossing the stairs. The next step is to decide who should go next after this customer.
+
+If there are people waiting in the same direction, the stairs could allow more people, and batch size is not reached, and there are no people waiting in the other direction, then we could awaken the next customer in the same direction.
+
+When do we awaken the other direction? Only when we cannot go in the same direction. That means either batch size reaches max in the same direction, or nobody in the same direction is waiting. Of course, it only makes sense to allow other direction to go through if there are peple waiting there.
+
+The other situation is that there are no people waiting or crossing, then we reset everything.
+
+Now that the customer has crossed the stair, updated related counter, and awaken the right direction, its job is done.
+
 ### - semWait()
+To queue in the semaphore's buffer, decrease the counter in the buffer, and check if there are enough space for new thread to enqueue.
+
+
 ### - semSignal()
+To awaken a thread in semaphore's buffer, increase the available space counter, and check if space number is valid.
 
 ## Contributions
 ---
