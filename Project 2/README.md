@@ -93,9 +93,9 @@ You can compile and run the code by running `make` in the terminal. There will b
 
 To test the code, you can change the value of the follwing variables defined at the start of the `stairs.c` file:
 
--`tNum`: the maximum number of customers/threads in the system to test
--`maxStairs`: how many customers can be on the stairs at the same time
--`maxBatch`: how many customers of the same direction can be on a batch
+- `tNum`: the maximum number of customers/threads in the system to test
+- `maxStairs`: how many customers can be on the stairs at the same time
+- `maxBatch`: how many customers of the same direction can be on a batch
 
 
 ## Contributions
