@@ -394,9 +394,9 @@ void *a(void *arg)
 
 	clock_gettime(CLOCK_MONOTONIC_RAW, &finishTime);
 
-	turnaroundTime[tIDb] = (finishTime.tv_nsec - arriveTime.tv_nsec) / 1000000000.0 +
+	turnaroundTime[tIDa] = (finishTime.tv_nsec - arriveTime.tv_nsec) / 1000000000.0 +
 						   (finishTime.tv_sec - arriveTime.tv_sec);
-	responseTime[tIDb] = (startTime.tv_nsec - arriveTime.tv_nsec) / 1000000000.0 +
+	responseTime[tIDa] = (startTime.tv_nsec - arriveTime.tv_nsec) / 1000000000.0 +
 						 (startTime.tv_sec - arriveTime.tv_sec);
 
 	pthread_exit(NULL);
