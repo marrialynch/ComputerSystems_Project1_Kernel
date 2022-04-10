@@ -55,6 +55,49 @@ To queue in the semaphore's buffer, decrease the counter in the buffer, and chec
 ### - semSignal()
 To awaken a thread in semaphore's buffer, increase the available space counter, and check if space number is valid.
 
+## Test
+
+## Free of deadlock and starvation
+
+## Turnaround Time and Response Time
+
+Suppose the crossing time for 1 customer from A to B or B to A is always 1 second. 
+
+When we permit at most 6 customers on the stairs and at most 10 customers of the same direction on a batch, 
+
+ >The average Turnaroud time for 20 customers is 2.251068 seconds 
+
+ >The average Response time for 20 customers is 1.250492 seconds 
+
+ >The average Turnaroud time for 200 customers is 14.829678 seconds 
+
+ >The average Response time for 200 customers is 13.829169 seconds 
+
+ >The average Turnaroud time for 2000 customers is 143.287271 seconds 
+
+ >The average Response time for 2000 customers is 142.286729 seconds 
+
+
+It's not “efficient” when we have 2000 customers, we can adjust the value of maxStairs and maxBatch.
+
+When we permit at most 10 customers on the stairs and at most 100 customers of the same direction on a batch, 
+
+ >The average Turnaroud time for 2000 customers is 91.460500 seconds 
+
+ >The average Response time for 2000 customers is 90.459962 seconds 
+
+
+## How to compile, run and test the code
+
+You can compile and run the code by running `make` in the terminal. There will be two output files `output1.txt` and `output2.txt` generated in the folder after the program ends.
+
+To test the code, you can change the value of the flowwing variables defined at the start of the `stairs.c` file:
+
+`tNum`: the maximum number of customers/threads in the system to test
+`maxStairs`: how many customers can be on the stairs at the same time
+`maxBatch`: how many customers of the same direction can be on a batch
+
+
 ## Contributions
 ---
 

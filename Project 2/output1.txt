@@ -1,150 +1,110 @@
 Project 2: Customer crossing problem using pThreads and Semaphores
 *****************
 
-Parent Process PID: 324293 
-****
-Thread 0: About to across from B to A 
-0 is Crossing from B to A
-0 Signaling Mutex
-****
-Thread 1: About to across from A to B 
-1 is now supposed to wait
-1 was waiting until signal callSignal has been called 
-1 is about to cross 
-Signaling Mutex
-****
-Thread 2: About to across from B to A 
-2 is now supposed to wait
-2 was waiting until signal call.Signal has been called 
-2 is about to cross 
-2 Signaling Mutex
-****
-Thread 3: About to across from B to A 
-3 is Crossing from B to A
-3 Signaling Mutex
-****
-Thread 4: About to across from B to A 
-4 is Crossing from B to A
-4 Signaling Mutex
-****
-Thread 5: About to across from B to A 
-5 is Crossing from B to A
-5 Signaling Mutex
-****
-Thread 6: About to across from A to B 
-6 is now supposed to wait
-6 was waiting until signal callSignal has been called 
-6 is about to cross 
-Signaling Mutex
-0 Crossing Finished. Waiting for mutex 
-2 Crossing Finished. Waiting for mutex 
-1 Crossing Finished. Waiting for mutex 
-
- xingCnt: 7, xedCnt: 0, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
-Mutex Passed
-
- xingCnt: 7, xedCnt: 0, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
-1: Signaling Mutex
-Mutex Passed
-2: Signaling Mutex
-
- xingCnt: 7, xedCnt: 0, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
-Mutex Passed
-0: Signaling Mutex
-5 Crossing Finished. Waiting for mutex 
-
- xingCnt: 4, xedCnt: 3, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
-Mutex Passed
-5: Signaling Mutex
-4 Crossing Finished. Waiting for mutex 
-
- xingCnt: 3, xedCnt: 4, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
-Mutex Passed
-4: Signaling Mutex
-3 Crossing Finished. Waiting for mutex 
-
- xingCnt: 2, xedCnt: 5, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
-Mutex Passed
-3: Signaling Mutex
-6 Crossing Finished. Waiting for mutex 
-
- xingCnt: 1, xedCnt: 6, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
-Mutex Passed
-6: Crossing Direction Reset 
-
- Thread: 7 crossing count larger than maxStairs 
-****
-Thread 7: About to across from A to B 
-7 is Crossing from A to B
-7 Signaling Mutex
-
- Thread: 15 crossing count larger than maxStairs 
+Parent Process PID: 342160 
 ****
 Thread 15: About to across from A to B 
 15 is Crossing from A to B
 15 Signaling Mutex
-
- Thread: 16 crossing count larger than maxStairs 
 ****
 Thread 16: About to across from A to B 
 16 is Crossing from A to B
 16 Signaling Mutex
-
- Thread: 17 crossing count larger than maxStairs 
 ****
 Thread 17: About to across from A to B 
 17 is Crossing from A to B
 17 Signaling Mutex
-
- Thread: 18 crossing count larger than maxStairs 
 ****
 Thread 18: About to across from A to B 
 18 is Crossing from A to B
 18 Signaling Mutex
-
- Thread: 19 crossing count larger than maxStairs 
 ****
 Thread 19: About to across from A to B 
 19 is Crossing from A to B
 19 Signaling Mutex
-
- Thread: 14 crossing count larger than maxStairs 
 ****
 Thread 14: About to across from B to A 
 14 is now supposed to wait
 14 was waiting until signal call.Signal has been called 
 14 is about to cross 
 14 Signaling Mutex
-
- Thread: 13 crossing count larger than maxStairs 
-
- Thread: 12 crossing count larger than maxStairs 
-
- Thread: 11 crossing count larger than maxStairs 
-
- Thread: 9 crossing count larger than maxStairs 
-
- Thread: 8 crossing count larger than maxStairs 
-
- Thread: 10 crossing count larger than maxStairs 
-7 Crossing Finished. Waiting for mutex 
+****
+Thread 13: About to across from B to A 
+13 is now supposed to wait
+13 was waiting until signal call.Signal has been called 
+13 is about to cross 
+13 Signaling Mutex
+15 Crossing Finished. Waiting for mutex 
 
  xingCnt: 7, xedCnt: 0, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
 Mutex Passed
-7: Signaling Mutex
-16 Crossing Finished. Waiting for mutex 
+15: Signaling Mutex
 
- xingCnt: 6, xedCnt: 1, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
-Mutex Passed
-16: Signaling Mutex
-18 Crossing Finished. Waiting for mutex 
+ Thread: 1 crossing count larger than maxStairs 
+****
+Thread 1: About to across from A to B 
+1 is now supposed to wait
+1 was waiting until signal callSignal has been called 
+1 is about to cross 
+Signaling Mutex
 
- xingCnt: 5, xedCnt: 2, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+ Thread: 2 crossing count larger than maxStairs 
+
+ Thread: 3 crossing count larger than maxStairs 
+
+ Thread: 4 crossing count larger than maxStairs 
+
+ Thread: 5 crossing count larger than maxStairs 
+
+ Thread: 6 crossing count larger than maxStairs 
+
+ Thread: 7 crossing count larger than maxStairs 
+
+ Thread: 8 crossing count larger than maxStairs 
+
+ Thread: 9 crossing count larger than maxStairs 
+17 Crossing Finished. Waiting for mutex 
+
+ xingCnt: 7, xedCnt: 1, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
 Mutex Passed
-18: Signaling Mutex
+17: Signaling Mutex
+19 Crossing Finished. Waiting for mutex 
+
+ xingCnt: 6, xedCnt: 2, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
+Mutex Passed
+19: Signaling Mutex
+13 Crossing Finished. Waiting for mutex 
+
+ xingCnt: 5, xedCnt: 3, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
+Mutex Passed
+13: Signaling Mutex
+
+ Thread: 11 crossing count larger than maxStairs 
+****
+Thread 11: About to across from B to A 
+11 is now supposed to wait
+11 was waiting until signal call.Signal has been called 
+11 is about to cross 
+11 Signaling Mutex
+
+ Thread: 10 crossing count larger than maxStairs 
+****
+Thread 10: About to across from A to B 
+10 is now supposed to wait
+10 was waiting until signal callSignal has been called 
+10 is about to cross 
+Signaling Mutex
+
+ Thread: 0 crossing count larger than maxStairs 
+****
+Thread 0: About to across from B to A 
+0 is now supposed to wait
+0 was waiting until signal call.Signal has been called 
+0 is about to cross 
+0 Signaling Mutex
 14 Crossing Finished. Waiting for mutex 
 
- xingCnt: 4, xedCnt: 3, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+ xingCnt: 7, xedCnt: 4, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
 Mutex Passed
 14: Signaling Mutex
 
@@ -155,20 +115,89 @@ Thread 12: About to across from A to B
 12 was waiting until signal callSignal has been called 
 12 is about to cross 
 Signaling Mutex
+16 Crossing Finished. Waiting for mutex 
 
- Thread: 11 crossing count larger than maxStairs 
-****
-Thread 11: About to across from B to A 
-11 is now supposed to wait
-11 was waiting until signal call.Signal has been called 
-11 is about to cross 
-11 Signaling Mutex
+ xingCnt: 7, xedCnt: 5, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
+Mutex Passed
+16: Signaling Mutex
+18 Crossing Finished. Waiting for mutex 
 
- Thread: 9 crossing count larger than maxStairs 
+ xingCnt: 6, xedCnt: 6, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
+Mutex Passed
+18: Signaling Mutex
+11 Crossing Finished. Waiting for mutex 
+
+ xingCnt: 5, xedCnt: 7, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
+Mutex Passed
+11: Signaling Mutex
+1 Crossing Finished. Waiting for mutex 
+
+ xingCnt: 4, xedCnt: 8, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
+Mutex Passed
+1: Signaling Mutex
+10 Crossing Finished. Waiting for mutex 
+
+ xingCnt: 3, xedCnt: 9, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
+Mutex Passed
+10: Signaling Mutex
+
+ Thread: 2 crossing count larger than maxStairs 
 ****
-Thread 9: About to across from B to A 
-9 is Crossing from B to A
-9 Signaling Mutex
+Thread 2: About to across from B to A 
+2 is now supposed to wait
+2 was waiting until signal call.Signal has been called 
+2 is about to cross 
+2 Signaling Mutex
+0 Crossing Finished. Waiting for mutex 
+
+ xingCnt: 3, xedCnt: 10, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+Mutex Passed
+0: Signaling Mutex
+
+ Thread: 3 crossing count larger than maxStairs 
+****
+Thread 3: About to across from B to A 
+3 is now supposed to wait
+3 was waiting until signal call.Signal has been called 
+3 is about to cross 
+3 Signaling Mutex
+
+ Thread: 4 crossing count larger than maxStairs 
+****
+Thread 4: About to across from B to A 
+4 is now supposed to wait
+4 was waiting until signal call.Signal has been called 
+4 is about to cross 
+4 Signaling Mutex
+12 Crossing Finished. Waiting for mutex 
+
+ Thread: 5 crossing count larger than maxStairs 
+
+ xingCnt: 4, xedCnt: 11, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+****
+Thread 5: About to across from B to A 
+Mutex Passed
+5 is now supposed to wait
+5 was waiting until signal call.Signal has been called 
+12: Signaling Mutex
+5 is about to cross 
+5 Signaling Mutex
+
+ Thread: 6 crossing count larger than maxStairs 
+****
+Thread 6: About to across from A to B 
+6 is now supposed to wait
+6 was waiting until signal callSignal has been called 
+6 is about to cross 
+Signaling Mutex
+
+ Thread: 7 crossing count larger than maxStairs 
+****
+Thread 7: About to across from A to B 
+7 is now supposed to wait
+7 was waiting until signal callSignal has been called 
+7 is about to cross 
+Signaling Mutex
 
  Thread: 8 crossing count larger than maxStairs 
 ****
@@ -178,69 +207,56 @@ Thread 8: About to across from B to A
 8 is about to cross 
 8 Signaling Mutex
 
- Thread: 10 crossing count larger than maxStairs 
-19 Crossing Finished. Waiting for mutex 
+ Thread: 9 crossing count larger than maxStairs 
+2 Crossing Finished. Waiting for mutex 
 
- xingCnt: 7, xedCnt: 4, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+ xingCnt: 7, xedCnt: 12, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
 Mutex Passed
-19: Signaling Mutex
-17 Crossing Finished. Waiting for mutex 
+2: Signaling Mutex
+6 Crossing Finished. Waiting for mutex 
 
- xingCnt: 6, xedCnt: 5, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+ xingCnt: 6, xedCnt: 13, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
 Mutex Passed
-17: Signaling Mutex
+6: Signaling Mutex
+5 Crossing Finished. Waiting for mutex 
 
- Thread: 13 crossing count larger than maxStairs 
-****
-Thread 13: About to across from B to A 
-13 is now supposed to wait
-13 was waiting until signal call.Signal has been called 
-13 is about to cross 
-13 Signaling Mutex
-15 Crossing Finished. Waiting for mutex 
-
- xingCnt: 6, xedCnt: 6, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+ xingCnt: 5, xedCnt: 14, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
 Mutex Passed
-15: Signaling Mutex
-12 Crossing Finished. Waiting for mutex 
+5: Signaling Mutex
+7 Crossing Finished. Waiting for mutex 
 
- xingCnt: 5, xedCnt: 7, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+ xingCnt: 4, xedCnt: 15, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
 Mutex Passed
-12: Signaling Mutex
+7: Signaling Mutex
+3 Crossing Finished. Waiting for mutex 
+
+ xingCnt: 3, xedCnt: 16, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+Mutex Passed
+3: Signaling Mutex
 8 Crossing Finished. Waiting for mutex 
 
- xingCnt: 4, xedCnt: 8, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+ xingCnt: 2, xedCnt: 17, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
 Mutex Passed
 8: Signaling Mutex
-11 Crossing Finished. Waiting for mutex 
 
- xingCnt: 3, xedCnt: 9, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
-Mutex Passed
-11: Signaling Mutex
-13 Crossing Finished. Waiting for mutex 
-
- xingCnt: 2, xedCnt: 10, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
-Mutex Passed
-13: Signaling Mutex
-
- Thread: 10 crossing count larger than maxStairs 
+ Thread: 9 crossing count larger than maxStairs 
 ****
-Thread 10: About to across from A to B 
-10 is now supposed to wait
-10 was waiting until signal callSignal has been called 
-10 is about to cross 
-Signaling Mutex
+Thread 9: About to across from B to A 
+9 is now supposed to wait
+9 was waiting until signal call.Signal has been called 
+9 is about to cross 
+9 Signaling Mutex
+4 Crossing Finished. Waiting for mutex 
+
+ xingCnt: 2, xedCnt: 18, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
+Mutex Passed
+4: Signaling Mutex
 9 Crossing Finished. Waiting for mutex 
 
- xingCnt: 2, xedCnt: 11, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
+ xingCnt: 1, xedCnt: 19, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 2 
 Mutex Passed
-9: Signaling Mutex
-10 Crossing Finished. Waiting for mutex 
+9: Crossing Direction Reset 
 
- xingCnt: 1, xedCnt: 12, toAwaitCnt: 0, toBwaitCnt: 0, xingDir: 1 
-Mutex Passed
-10: Crossing Direction Reset 
+ The average Turnaroud time for 20 customers is 2.101591 seconds 
 
- The average Turnaroud time for 20 customers is 2.000464 seconds 
-
- The average Response time for 20 customers is 1.000199 seconds 
+ The average Response time for 20 customers is 1.100791 seconds 
