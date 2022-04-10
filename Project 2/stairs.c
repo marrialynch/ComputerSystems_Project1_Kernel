@@ -80,7 +80,7 @@ int main()
 	tData_t tData[tNum];
 	pthread_t thread[tNum];
 
-	int resultCheck;
+	int resultCheck = 0;
 
 	if (sem_init(&mutex, 0, (unsigned int)1) < 0 ||
 		sem_init(&toA, 0, (unsigned int)1) < 0 ||
@@ -188,7 +188,7 @@ void *b(void *arg)
 		xingDir = 1;
 		xingCnt++;
 
-		printf("Signaling Mutex\n");
+		printf("%d Signaling Mutex\n", tIDb);
 
 		semSignal(&mutex);
 	}
@@ -197,11 +197,11 @@ void *b(void *arg)
 		printf("%d is now supposed to wait\n", tIDb);
 		toBwaitCnt++;
 
-		printf("%d is Signalling mutex \n", tIDb);
+		// printf("%d is Signalling mutex \n", tIDb);
 		// semWait(&mutex);
 		semWait(&toB);
 
-		printf("B was waiting until signal call.");
+		printf("%d was waiting until signal call", tIDb);
 		printf("Signal has been called \n");
 		toBwaitCnt--;
 		xingCnt++;
@@ -317,7 +317,7 @@ void *a(void *arg)
 		xingDir = 2;
 		xingCnt++;
 
-		printf("Signaling Mutex\n");
+		printf("%d Signaling Mutex\n", tIDa);
 
 		semSignal(&mutex);
 	}
@@ -326,7 +326,7 @@ void *a(void *arg)
 		printf("%d is now supposed to wait\n", tIDa);
 		toAwaitCnt++;
 
-		printf("%d is Signalling mutex \n", tIDa);
+		// printf("%d is Signalling mutex \n", tIDa);
 		// semWait(&mutex);
 		semWait(&toA);
 
@@ -337,7 +337,7 @@ void *a(void *arg)
 		xingDir = 2;
 
 		printf("%d is about to cross \n", tIDa);
-		printf("Signaling Mutex\n");
+		printf("%d Signaling Mutex\n", tIDa);
 		semSignal(&toA);
 		semSignal(&mutex);
 	}
