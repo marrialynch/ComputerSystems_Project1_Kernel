@@ -56,8 +56,13 @@ To queue in the semaphore's buffer, decrease the counter in the buffer, and chec
 To awaken a thread in semaphore's buffer, increase the available space counter, and check if space number is valid.
 
 ## Test
+We tested our project by altering the variables tNum, maxStairs, and maxBatch. These three variables dictate how many threads are run in total, at once, and in the same direction. A few of the many test cases we used were with tNum of 20, 200, and 2000. At a tNum of 2000 we altered maxStairs and maxBatch from the original 6 and 10, to 10 and 100.
 
 ## Free of deadlock and starvation
+
+Starvation is prevented by our maxBatch variable. Say 1000 threads were trying to go from A to B and 1 was trying to go from B to A. Instead of that 1 having to wait for all the 1000 to go through, it will only have to wait for a maxBatch amount to go through. 
+
+Deadlocks require 4 conditions to be satisfied: mutual exclusion, hold and wait, no preemption, and circular wait. Our code prevents this through eliminating the possibility of holding and waiting. 
 
 ## Turnaround Time and Response Time
 
