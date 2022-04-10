@@ -7,6 +7,7 @@ Stairs crossing problem using pThreads and Semaphores
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 
 #ifndef tNum
 // TODO
@@ -58,6 +59,9 @@ void *b(void *arg);
 // Semaphore wait and signal functions
 void semWait(sem_t *sem);
 void semSignal(sem_t *sem);
+
+double turnaroundTime[tNum], avgTurnaroundTime;
+double responseTime[tNum], avgResponseTime;
 
 int main()
 {
@@ -121,6 +125,19 @@ int main()
 		}
 	}
 
+	double sumResponseTime = 0;
+	double sumTurnaroundTime = 0;
+	for (int i = 0; i < tNum; ++i)
+	{
+		sumResponseTime += responseTime[i];
+		sumTurnaroundTime += turnaroundTime[i];
+	}
+
+	avgResponseTime = sumResponseTime / tNum;
+	avgTurnaroundTime = sumTurnaroundTime / tNum;
+
+	printf("\n The average Turnaroud time for %d customers is %f seconds \n", tNum, avgTurnaroundTime);
+	printf("\n The average Response time for %d customers is %f seconds \n", tNum, avgResponseTime);
 	return EXIT_SUCCESS;
 }
 
@@ -131,9 +148,13 @@ int main()
 void *b(void *arg)
 {
 
+	// Setup timer
+	struct timespec arriveTime, startTime, finishTime;
 	tData_t *data = (tData_t *)arg;
 
 	int tIDb = data->tID;
+
+	clock_gettime(CLOCK_MONOTONIC_RAW, &arriveTime);
 	semWait(&mutex);
 
 	// if people on the stairs reach max, we constanlty release mutex to let customer
@@ -193,6 +214,8 @@ void *b(void *arg)
 		semSignal(&mutex);
 	}
 
+	clock_gettime(CLOCK_MONOTONIC_RAW, &startTime);
+
 	sleep(1);
 	printf("%d Crossing Finished. Waiting for mutex \n", tIDb);
 	printf("\n xingCnt: %d, xedCnt: %d, toAwaitCnt: %d, toBwaitCnt: %d, xingDir: %d \n", xingCnt, xedCnt, toAwaitCnt, toBwaitCnt, xingDir);
@@ -241,6 +264,13 @@ void *b(void *arg)
 		semSignal(&mutex);
 	}
 
+	clock_gettime(CLOCK_MONOTONIC_RAW, &finishTime);
+
+	turnaroundTime[tIDb] = (finishTime.tv_nsec - arriveTime.tv_nsec) / 1000000000.0 +
+						   (finishTime.tv_sec - arriveTime.tv_sec);
+	responseTime[tIDb] = (startTime.tv_nsec - arriveTime.tv_nsec) / 1000000000.0 +
+						 (startTime.tv_sec - arriveTime.tv_sec);
+
 	pthread_exit(NULL);
 }
 
@@ -249,9 +279,12 @@ void *b(void *arg)
  */
 void *a(void *arg)
 {
+	// Setup timer
+	struct timespec arriveTime, startTime, finishTime;
 	tData_t *data = (tData_t *)arg;
 
 	int tIDa = data->tID;
+	clock_gettime(CLOCK_MONOTONIC_RAW, &arriveTime);
 	semWait(&mutex);
 	// if people on the stairs reach max, we constanlty release mutex to let customer
 	// update xedCounter
@@ -309,6 +342,8 @@ void *a(void *arg)
 		semSignal(&mutex);
 	}
 
+	clock_gettime(CLOCK_MONOTONIC_RAW, &startTime);
+
 	sleep(1);
 	printf("%d Crossing Finished. Waiting for mutex \n", tIDa);
 	printf("\n xingCnt: %d, xedCnt: %d, toAwaitCnt: %d, toBwaitCnt: %d, xingDir: %d \n", xingCnt, xedCnt, toAwaitCnt, toBwaitCnt, xingDir);
@@ -356,6 +391,13 @@ void *a(void *arg)
 		printf("%d: Signaling Mutex\n", tIDa);
 		semSignal(&mutex);
 	}
+
+	clock_gettime(CLOCK_MONOTONIC_RAW, &finishTime);
+
+	turnaroundTime[tIDb] = (finishTime.tv_nsec - arriveTime.tv_nsec) / 1000000000.0 +
+						   (finishTime.tv_sec - arriveTime.tv_sec);
+	responseTime[tIDb] = (startTime.tv_nsec - arriveTime.tv_nsec) / 1000000000.0 +
+						 (startTime.tv_sec - arriveTime.tv_sec);
 
 	pthread_exit(NULL);
 }
